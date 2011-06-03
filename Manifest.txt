@@ -1,0 +1,7 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/purdytest
+lib/purdytest.rb
+test/test_purdytest.rb
