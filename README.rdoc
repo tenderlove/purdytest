@@ -16,7 +16,7 @@ For colorized diff output, make sure you have `colordiff` installed.
   [colordiff](http://colordiff.sourceforge.net/) installed.  You can usually
   install colordiff via `brew install colordiff` or `port install colordiff`.
 
-* [HERE IS A VIDEO]
+* [HERE IS A VIDEO](http://www.youtube.com/watch?v=Md4PYx_Wj6M)
 
 == SYNOPSIS:
 
