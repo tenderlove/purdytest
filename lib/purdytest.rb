@@ -1,6 +1,6 @@
-module Purdytest
-  VERSION = '1.0.0'
+require 'minitest/unit'
 
+module Purdytest
   class IO
     attr_reader :io
     attr_accessor :pass, :fail, :skip, :error
