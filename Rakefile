@@ -13,7 +13,7 @@ Hoe.spec 'purdytest' do
   self.readme_file      = 'README.rdoc'
   self.history_file     = 'CHANGELOG.rdoc'
   self.extra_rdoc_files = FileList['*.rdoc']
-  self.extra_deps       << ['minitest', '~> 2.2']
+  self.extra_deps       << ['minitest', '>= 2.2']
   self.testlib          = :minitest
 end
 
