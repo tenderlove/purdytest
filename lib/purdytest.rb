@@ -1,12 +1,12 @@
 module Purdytest
-  VERSION = '1.0.0'
+  VERSION = '2.0.0'
 
-  class IO
-    attr_reader :io
-    attr_accessor :pass, :fail, :skip, :error
+  CONFIG = Struct.new(:pass, :fail, :error, :skip)
+    .new(:green, :red, :red, :yellow)
 
-      # Colors stolen from /System/Library/Perl/5.10.0/Term/ANSIColor.pm
-      COLORS = {
+  class IO < Struct.new :io
+    # Colors stolen from /System/Library/Perl/5.10.0/Term/ANSIColor.pm
+    COLORS = {
       :black      => 30,   :on_black   => 40,
       :red        => 31,   :on_red     => 41,
       :green      => 32,   :on_green   => 42,
@@ -17,13 +17,7 @@ module Purdytest
       :white      => 37,   :on_white   => 47
     }
 
-    def initialize io
-      @io    = io
-      @pass  = :green
-      @fail  = :red
-      @error = :red
-      @skip  = :yellow
-    end
+    CONFIG.members.each { |m| define_method(m) { CONFIG[m] } }
 
     def print o
       case o
@@ -43,14 +37,20 @@ module Purdytest
   end
 
   ###
-  # Yields the current minitest output, which *should* be an instance
-  # of Purdytest::IO (hopefully).
+  # Yields the current color configuration
   def self.configure
-    yield MiniTest::Unit.output
+    yield CONFIG
   end
 end
 
-MiniTest::Unit.output = Purdytest::IO.new(MiniTest::Unit.output)
+module MiniTest
+  def self.plugin_purdytest_init(options)
+    composite = Minitest.reporter
+    r = composite.reporters.find { |x| Minitest::ProgressReporter === x }
+    r.io = Purdytest::IO.new r.io
+  end
+  extensions << "purdytest"
+end
 
 if system("colordiff", __FILE__, __FILE__)
   MiniTest::Assertions.diff = 'colordiff -u'
